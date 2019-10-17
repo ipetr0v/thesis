@@ -1,0 +1,135 @@
+\documentclass[14pt,candidate]{disser}
+\usepackage[
+  a4paper, mag=1000, nohead, includefoot,
+  left=3cm, right=1cm, top=2cm, bottom=2.5cm
+]{geometry}
+
+\usepackage{algorithm}
+\usepackage[noend]{algpseudocode}
+\usepackage{amsfonts}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amstext}
+\usepackage{amsthm}
+\usepackage{array}
+\usepackage[english,russian]{babel}
+\usepackage{caption}
+\usepackage{epigraph}
+\usepackage{epsfig}
+\usepackage[T2A]{fontenc}
+\usepackage{graphicx}
+\usepackage{indentfirst}
+\usepackage[utf8]{inputenc}
+\usepackage{mathrsfs}
+\usepackage{pifont}
+\usepackage{pst-grad}
+\usepackage{pst-plot}
+\usepackage{pstricks}
+\usepackage[inference]{semantic}
+\usepackage{subcaption}
+\usepackage{subfiles}
+\usepackage{tabularx}
+\usepackage{textcomp}
+\usepackage{totcount}
+\usepackage{totpages}
+\usepackage{verbatim}
+
+% Сross references
+\usepackage{hyperref}
+
+% Color cross references
+%\usepackage[colorlinks,urlcolor=blue]{hyperref}
+
+% Enable sloppy line breaks
+%\sloppy
+
+\theoremstyle{definition}
+\newtheorem{definition}{Определение}[chapter]
+\newtheorem{theorem}{Теорема}[chapter]
+\newtheorem{lemma}[theorem]{Лемма}
+\newtheorem{corollary}[theorem]{Следствие}
+\newtheorem{proposition}[theorem]{Утверждение}
+
+\pagestyle{footcenter}
+\chapterpagestyle{footcenter}
+
+\begin{document}
+
+% Count chapters, figures, tables and citations
+\newtotcounter{chapternum}
+\setcounter{chapternum}{-2}
+\def\oldchapter{} \let\oldchapter=\chapter
+\def\chapter{\stepcounter{chapternum}\oldchapter}
+
+\newtotcounter{figurenum}
+\def\oldfigure{} \let\oldfigure=\figure
+\def\figure{\stepcounter{figurenum}\oldfigure}
+
+\newtotcounter{tablenum}
+\def\oldtabular{} \let\oldtabular=\tabular
+\def\tabular{\stepcounter{tablenum}\oldtabular}
+\def\oldtabularx{} \let\oldtabularx=\tabularx
+\def\tabularx{\stepcounter{tablenum}\oldtabularx}
+
+\newtotcounter{citenum}
+\def\oldbibitem{} \let\oldbibitem=\bibitem
+\def\bibitem{\stepcounter{citenum}\oldbibitem}
+
+% Number algorithms in chapters
+\makeatletter
+\@addtoreset{algorithm}{chapter}
+\makeatother
+\renewcommand{\thealgorithm}{\thechapter.\arabic{algorithm}}
+
+% Don't include an illustration list into the table of contents
+\makeatletter
+\renewcommand\listoffigures{
+  \if@twocolumn\@restonecoltrue\onecolumn
+  \else\@restonecolfalse\fi
+  \chapter*{
+    \listfigurename
+    \@mkboth{\MakeUppercase\listfigurename}{\MakeUppercase\listfigurename}
+  }
+  \@starttoc{lof}
+  \if@restonecol\twocolumn\fi
+} 
+\makeatother
+
+\renewcommand{\contentsname}{Оглавление}
+\renewcommand{\refname}{Литература}
+\renewcommand{\figurename}{Рисунок}
+\renewcommand{\tablename}{Таблица}
+\renewcommand{\lstlistingname}{Листинг}
+\renewcommand{\proofname}{Доказательство}
+
+\input{chapters/title.tex}
+\maketitle
+
+\setcounter{page}{2}
+{
+  \hypersetup{linkcolor=black}
+  \tableofcontents
+  \pagebreak
+    
+  \listoffigures
+  \pagebreak
+}
+
+\subfile{chapters/introduction.tex}
+\subfile{chapters/problem.tex}
+\subfile{chapters/classification}
+\subfile{chapters/survey.tex}
+\subfile{chapters/model.tex}
+\subfile{chapters/algorithm.tex}
+\subfile{chapters/implementation.tex}
+\subfile{chapters/conclusion.tex}
+ 
+\pagebreak
+
+\bibliographystyle{gost2008}
+\bibliography{bibliography}
+
+\appendix
+\subfile{chapters/appendix.tex}
+
+\end{document}
